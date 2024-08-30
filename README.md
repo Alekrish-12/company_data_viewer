@@ -34,7 +34,7 @@ Open index.html directly from your file system in your web browser.
 Start Node.js Server (if using backend):
 
 node server.js
-Visit http://localhost:3000 in your browser.
+Visit [http://localhost:3000](http://localhost:3000/).
 Usage
 Open the Webpage:
 
