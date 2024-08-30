@@ -18,7 +18,7 @@ This project is a simple web application that displays a list of companies and v
 
 1. **Clone the Repository**
    
-   git clone https://github.com/your-username/company_chart_viewer.git
+   git [clone https://github.com/your-username/company_chart_viewer.git](https://github.com/Alekrish-12/company_data_viewer)
    cd company_chart_viewer
 Install Dependencies
 
