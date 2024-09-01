@@ -1,45 +1,19 @@
-// Fetch the CSV file and process it
-async function fetchData() {
-    const response = await fetch('dump.csv');
-    const data = await response.text();
-    const rows = data.split('\n').slice(1);  // Skip header
+document.addEventListener("DOMContentLoaded", function () {
+    const companiesList = document.getElementById('companies');
+    const chartContext = document.getElementById('companyChart').getContext('2d');
+    let companyData = [];
 
-    let companyList = [];
-    rows.forEach(row => {
-        const cols = row.split(',');
-        const companyName = cols[0];  // Assuming first column is company name
-        if (!companyList.includes(companyName)) {
-            companyList.push(companyName);
-            document.getElementById('company-list').innerHTML += `<li class="list-group-item" onclick="displayChart('${companyName}')">${companyName}</li>`;
-        }
-    });
-
-    return rows;  // Return for chart usage
-}
-
-let csvData = [];
-
-fetchData().then(data => {
-    csvData = data;  // Store data for later use
-});
-
-// Display the chart based on selected company
-function displayChart(companyName) {
-    const filteredData = csvData.filter(row => row.startsWith(companyName));
-    const labels = filteredData.map(row => row.split(',')[1]);  // Assuming 2nd column contains labels
-    const dataPoints = filteredData.map(row => row.split(',')[2]);  // Assuming 3rd column contains values
-
-    const ctx = document.getElementById('companyChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'line',
+    // Initialize an empty chart
+    let companyChart = new Chart(chartContext, {
+        type: 'bar',
         data: {
-            labels: labels,
+            labels: [],
             datasets: [{
-                label: companyName,
-                data: dataPoints,
+                label: 'Metrics',
+                data: [],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgba(75, 192, 192, 1)',
-                fill: false,
-                tension: 0.1
+                borderWidth: 1
             }]
         },
         options: {
@@ -50,4 +24,41 @@ function displayChart(companyName) {
             }
         }
     });
-}
+
+    // Load CSV data from the GitHub link
+    Papa.parse('https://raw.githubusercontent.com/shaktids/stock_app_test/main/dump.csv', {
+        download: true,
+        header: true,
+        complete: function(results) {
+            companyData = results.data;
+            populateCompaniesList(companyData);
+        }
+    });
+
+    // Populate company names in the sidebar list
+    function populateCompaniesList(data) {
+        data.forEach((company) => {
+            const companyItem = document.createElement('li');
+            companyItem.classList.add('list-group-item', 'cursor-pointer');
+            companyItem.textContent = company.Company;
+            companyItem.addEventListener('click', () => displayChartData(company));
+            companiesList.appendChild(companyItem);
+        });
+    }
+
+    // Display chart data for the selected company
+    function displayChartData(company) {
+        const labels = ['Metric1', 'Metric2', 'Metric3', 'Metric4'];
+        const data = [
+            company.Metric1,
+            company.Metric2,
+            company.Metric3,
+            company.Metric4
+        ].map(Number);  // Convert strings to numbers
+
+        // Update chart data and labels
+        companyChart.data.labels = labels;
+        companyChart.data.datasets[0].data = data;
+        companyChart.update();
+    }
+});
