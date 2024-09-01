@@ -4,27 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Company Chart Viewer</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-3">
-                <h2>Companies</h2>
-                <ul id="company-list" class="list-group">
-                    <!-- Company names will be dynamically loaded here -->
-                </ul>
+            <!-- Sidebar for Company List -->
+            <div class="col-md-3 bg-light p-3" id="company-list">
+                <h4>Companies</h4>
+                <ul class="list-group" id="companies"></ul>
             </div>
-            <div class="col-9">
-                <h2>Company Data Chart</h2>
-                <canvas id="companyChart" width="400" height="200"></canvas>
+            <!-- Chart Section -->
+            <div class="col-md-9 p-3">
+                <canvas id="companyChart"></canvas>
             </div>
         </div>
     </div>
 
-    <!-- Include Chart.js and app.js -->
+    <!-- Chart.js Library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="app_web.js"></script>
+    <!-- PapaParse Library for parsing CSV -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="app.js"></script>
 </body>
 </html>
